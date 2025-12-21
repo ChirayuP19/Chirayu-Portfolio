@@ -1,0 +1,20 @@
+package tech.chirayu.portfolio.exceptions;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+	
+	@ExceptionHandler(Exception.class)
+	public String handlegenralException(Exception e,RedirectAttributes redirectAttributes,
+			HttpServletRequest httpServletRequest) {
+		String header = httpServletRequest.getHeader("referer");
+		System.out.println(header);
+		redirectAttributes.addFlashAttribute("error","Something went Wrong");
+		return "redirect:"+header;	
+	}
+}
