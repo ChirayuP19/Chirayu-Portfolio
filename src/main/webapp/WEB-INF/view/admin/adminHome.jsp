@@ -133,6 +133,11 @@
             <a href="${pageContext.request.contextPath}/client/home" class="btn btn-outline-3d">
                 Client Page
             </a>
+            
+            <a href="${pageContext.request.contextPath}/admin/addservice" class="btn btn-outline-3d">
+               Add services
+            </a>
+            
         </div>
     </div>
 

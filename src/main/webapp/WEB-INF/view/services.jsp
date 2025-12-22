@@ -59,6 +59,7 @@
 				</div>
 			</div>
 			<div class="row feature_inner">
+			
 				<div class="col-lg-3 col-md-6">
 					<div class="feature_item">
 						<img src="${pageContext.request.contextPath}/img/services/s1.png" alt="">
@@ -67,7 +68,9 @@
 							heaven isn't bearing tree</p>
 					</div>
 				</div>
+				
 				<div class="col-lg-3 col-md-6">
+				
 					<div class="feature_item">
 						<img src="${pageContext.request.contextPath}/img/services/s2.png" alt="">
 						<h4>UI/ux design</h4>
@@ -75,7 +78,9 @@
 							heaven isn't bearing tree</p>
 					</div>
 				</div>
+				
 				<div class="col-lg-3 col-md-6">
+				
 					<div class="feature_item">
 						<img src="${pageContext.request.contextPath}/img/services/s3.png" alt="">
 						<h4>Web design</h4>
@@ -83,7 +88,9 @@
 							heaven isn't bearing tree</p>
 					</div>
 				</div>
+				
 				<div class="col-lg-3 col-md-6">
+				
 					<div class="feature_item">
 						<img src="${pageContext.request.contextPath}/img/services/s4.png" alt="">
 						<h4>seo optimize</h4>
