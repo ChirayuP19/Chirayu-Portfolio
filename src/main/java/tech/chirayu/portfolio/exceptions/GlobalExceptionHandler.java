@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
 			HttpServletRequest httpServletRequest) {
 		String header = httpServletRequest.getHeader("referer");
 		System.out.println(header);
-		redirectAttributes.addFlashAttribute("error","Something went Wrong");
+		redirectAttributes.addFlashAttribute("error","Somthing went Wrong");
 		return "redirect:"+header;	
 	}
 	

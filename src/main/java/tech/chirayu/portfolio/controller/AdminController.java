@@ -1,8 +1,16 @@
 package tech.chirayu.portfolio.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.ResultSet;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +31,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import tech.chirayu.portfolio.dto.ContactDto;
 import tech.chirayu.portfolio.dto.ServiceDto;
 import tech.chirayu.portfolio.services.ContactService;
+import tech.chirayu.portfolio.services.ServicesService;
 
 @Controller
 @RequestMapping("/admin")
@@ -30,6 +39,9 @@ public class AdminController {
 
 	@Autowired
 	private ContactService contactService;
+	
+	@Autowired
+	private ServicesService servicesService;
 
 	@GetMapping("/home")
 	public String home() {
@@ -56,7 +68,7 @@ public class AdminController {
 	}
 	
 	@PostMapping("/addservice")
-	public String addService(@Valid @ModelAttribute ServiceDto serviceDto, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+	public String addService(@Valid @ModelAttribute ServiceDto serviceDto, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) throws IllegalStateException, IOException, Exception {
 	
 		if(bindingResult.hasErrors()) {
 			model.addAttribute("result","Invalid input");
@@ -70,15 +82,26 @@ public class AdminController {
 			return "admin/addService";
 		}
 		
-		MultipartFile file = serviceDto.getServiceFile();
-		long size = file.getSize();
-		if(size>(2*(1024*1024))) {
-			model.addAttribute("Fileerror","File size must not Exceed 2MB");
+		MultipartFile multipart = serviceDto.getServiceFile();
+		long size = multipart.getSize();
+		if(size>(1*(1024*1024))) {
+			model.addAttribute("Fileerror","File size must not Exceed 1MB");
 			return "admin/addService";
 		}
 		
-		return "admin/addService";
 		
+		String realPath=httpServletRequest.getServletContext().getRealPath("img/services/");
+		
+	
+		String originalFilename=UUID.randomUUID().toString()+LocalDateTime.now().toString().replace(":", "!")+multipart.getOriginalFilename();
+		Path path = Paths.get(realPath, originalFilename);
+		File file2 = path.toFile();
+		
+		multipart.transferTo(file2);
+	
+		servicesService.saveservice(serviceDto, originalFilename);
+		redirectAttributes.addFlashAttribute("result","Service Added Successfully");
+		return "redirect:/admin/addservice";
 	}
 	
 	

@@ -19,29 +19,37 @@
 	<br>
 
 
-	<p>${result}</p><br>
-	
-	
+	<p style="color:red">${result}</p>
+
+	<br><p>${error}</p>
+
+
 	<form action="${pageContext.request.contextPath}/admin/addservice"
 		method="post" enctype="multipart/form-data">
 
 		<c:forEach var="err" items="${error}">
-			<c:if test="${err.field eq 'title'}">${err.defaultMessage}</c:if>
-		</c:forEach><br>
+			<c:set var="isFieldError"
+				value="${err.getClass().name.contains('FieldError')}" />
+			<c:if test="${isFieldError && err.field eq 'title'}">
+				<span style="color: red;">${err.defaultMessage}</span>
+			</c:if>
+		</c:forEach>
 
 		<input type="text" name="title" placeholder="enter title"><br>
 		<br>
-
 		<c:forEach var="err" items="${error}">
-			<c:if test="${err.field eq 'description'}">${err.defaultMessage}</c:if>
-		</c:forEach><br>
-
-		
-		<textarea name="description"></textarea><br>
-		${Fileerror}
-		<br> <br> <input type="file" name="serviceFile"><br>
-		
+			<c:set var="isFieldError"
+				value="${err.getClass().name.contains('FieldError')}" />
+			<c:if test="${isFieldError && err.field eq 'description'}">
+				<span style="color: red;">${err.defaultMessage}</span>
+			</c:if>
+		</c:forEach>
 		<br>
+
+
+		<textarea name="description"></textarea>
+		<br> ${Fileerror} <br> <br> <input type="file"
+			name="serviceFile"><br> <br>
 		<button>Save</button>
 
 	</form>
