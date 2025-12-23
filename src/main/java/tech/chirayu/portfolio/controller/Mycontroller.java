@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import tech.chirayu.portfolio.dto.ContactDto;
 import tech.chirayu.portfolio.services.ContactService;
+import tech.chirayu.portfolio.services.ServicesService;
 
 @Controller
 @RequestMapping("/client")
@@ -24,6 +25,9 @@ public class Mycontroller {
 
 	@Autowired
 	private ContactService contactService;
+	
+	@Autowired
+	private ServicesService servicesService;
 
 	@GetMapping("/home")
 	public String home() {
@@ -36,7 +40,8 @@ public class Mycontroller {
 	}
 
 	@GetMapping("/services")
-	public String services() {
+	public String services(Model model) {
+		model.addAttribute("ListofServices",servicesService.readServices());
 		return "services";
 	}
 
