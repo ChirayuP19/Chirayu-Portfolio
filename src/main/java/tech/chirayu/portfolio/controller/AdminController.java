@@ -104,5 +104,10 @@ public class AdminController {
 		return "redirect:/admin/addservice";
 	}
 	
+	@GetMapping("/readAllServices")
+	public String readAllServices(Model model) {
+		model.addAttribute("listOfServices",servicesService.readServices());
+		return "admin/readAllServices";
+	}
 	
 }

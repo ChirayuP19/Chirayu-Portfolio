@@ -138,6 +138,11 @@
                Add services
             </a>
             
+            <a href="${pageContext.request.contextPath}/admin/readAllServices" class="btn btn-outline-3d">
+               Read all services
+            </a>
+            
+            
         </div>
     </div>
 
