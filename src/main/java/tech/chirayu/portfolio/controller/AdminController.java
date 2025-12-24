@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +31,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import tech.chirayu.portfolio.dto.ContactDto;
 import tech.chirayu.portfolio.dto.ServiceDto;
+import tech.chirayu.portfolio.entity.ServiceEntity;
+import tech.chirayu.portfolio.repositories.ServiceRepository;
 import tech.chirayu.portfolio.services.ContactService;
 import tech.chirayu.portfolio.services.ServicesService;
 
@@ -37,11 +40,17 @@ import tech.chirayu.portfolio.services.ServicesService;
 @RequestMapping("/admin")
 public class AdminController {
 
+    private final ServiceRepository serviceRepository;
+
 	@Autowired
 	private ContactService contactService;
 	
 	@Autowired
 	private ServicesService servicesService;
+
+    AdminController(ServiceRepository serviceRepository) {
+        this.serviceRepository = serviceRepository;
+    }
 
 	@GetMapping("/home")
 	public String home() {
@@ -110,5 +119,28 @@ public class AdminController {
 		return "admin/readAllServices";
 	}
 	
+	@GetMapping("/deleteServices")
+	public String deleteService(@RequestParam int id, @RequestParam String filename, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+		String realPath=httpServletRequest.getServletContext().getRealPath("img/services/");
+		servicesService.deleteServicedata(realPath, id, filename);
+		redirectAttributes.addFlashAttribute("deletemsg","Deleted Sucessfully");
+		return "redirect:/admin/readAllServices";
+	}
 	
+	@GetMapping("/updateService")
+	public String updateserviceview(@RequestParam int id,Model model) {
+		Optional<ServiceEntity> service = servicesService.readService(id);
+		ServiceEntity serviceEntity = service.get();
+		model.addAttribute("serviceData",serviceEntity);
+		return "admin/updateService";
+	}
+	
+	@PostMapping("/updateService")
+	public String updateserviceget(@RequestParam int id,@RequestParam String oldfilename ,@ModelAttribute ServiceDto serviceDto,HttpServletRequest httpServletRequest,RedirectAttributes redirectAttributes) throws IllegalStateException, IOException, Exception {
+		String realPath=httpServletRequest.getServletContext().getRealPath("img/services/");
+		MultipartFile serviceFile = serviceDto.getServiceFile();
+		servicesService.updateService(realPath, serviceFile, serviceDto, id, oldfilename);
+		return "redirect:/admin/readAllServices";
+	}
+
 }
