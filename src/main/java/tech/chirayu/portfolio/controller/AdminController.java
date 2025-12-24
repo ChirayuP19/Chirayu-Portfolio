@@ -93,13 +93,13 @@ public class AdminController {
 		String realPath=httpServletRequest.getServletContext().getRealPath("img/services/");
 		
 	
-		String originalFilename=UUID.randomUUID().toString()+LocalDateTime.now().toString().replace(":", "!")+multipart.getOriginalFilename();
-		Path path = Paths.get(realPath, originalFilename);
-		File file2 = path.toFile();
-		
-		multipart.transferTo(file2);
+//		String originalFilename=UUID.randomUUID().toString()+LocalDateTime.now().toString().replace(":", "!")+multipart.getOriginalFilename();
+//		Path path = Paths.get(realPath, originalFilename);
+//		File file2 = path.toFile();
+//		
+//		multipart.transferTo(file2);
 	
-		servicesService.saveservice(serviceDto, originalFilename);
+		servicesService.saveservice(realPath, multipart,serviceDto);
 		redirectAttributes.addFlashAttribute("result","Service Added Successfully");
 		return "redirect:/admin/addservice";
 	}
@@ -109,5 +109,6 @@ public class AdminController {
 		model.addAttribute("listOfServices",servicesService.readServices());
 		return "admin/readAllServices";
 	}
+	
 	
 }

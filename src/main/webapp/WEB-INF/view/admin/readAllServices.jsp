@@ -8,6 +8,18 @@
 <title>Service readAllData</title>
 </head>
 <body>
+<a href="${pageContext.request.contextPath}/admin/home"> Admin
+		Page </a>
+	<br>
+	<a href="${pageContext.request.contextPath}/client/home"> Client
+		Page </a>
+	<br>
+	
+	
+
+<h2>All Services</h2><br>
+<h2>${error}</h2><br>
+
 	<c:forEach var="service" items="${listOfServices}">
 		
 			<img style="width: 300px; height: auto;"

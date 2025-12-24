@@ -16,7 +16,12 @@
 
 	<a href="${pageContext.request.contextPath}/client/home"> Client
 		Page </a>
+	<br><br>
+	
+	<a href="${pageContext.request.contextPath}/admin/home"> Admin
+		Home </a>
 	<br>
+	
 
 
 	<p style="color:red">${result}</p>
