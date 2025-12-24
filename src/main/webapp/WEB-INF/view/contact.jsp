@@ -157,6 +157,7 @@
     </section>
     <!--================Contact Area =================-->
 
+		<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d184552.30943582457!2d-79.37805805!3d43.7182412!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4cb90d7c63ba5%3A0x323555502ab4c477!2sToronto%2C%20ON!5e0!3m2!1sen!2sca!4v1766587878478!5m2!1sen!2sca" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     <!--================Footer Area =================-->
     <%@include file="footer.jsp"%>
     <!--================End Footer Area =================-->
@@ -175,7 +176,8 @@
     <script src="${pageContext.request.contextPath}/js/jquery.ajaxchimp.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/mail-script.js"></script>
     <!--gmaps Js-->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
+   
+    
     <script src="${pageContext.request.contextPath}/js/gmaps.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/theme.js"></script>
 </body>
