@@ -35,10 +35,13 @@ import tech.chirayu.portfolio.entity.ServiceEntity;
 import tech.chirayu.portfolio.repositories.ServiceRepository;
 import tech.chirayu.portfolio.services.ContactService;
 import tech.chirayu.portfolio.services.ServicesService;
+import tech.chirayu.portfolio.services.ServicesServiceImpl;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+
+    private final ServicesServiceImpl servicesServiceImpl;
 
     private final ServiceRepository serviceRepository;
 
@@ -48,8 +51,9 @@ public class AdminController {
 	@Autowired
 	private ServicesService servicesService;
 
-    AdminController(ServiceRepository serviceRepository) {
+    AdminController(ServiceRepository serviceRepository, ServicesServiceImpl servicesServiceImpl) {
         this.serviceRepository = serviceRepository;
+        this.servicesServiceImpl = servicesServiceImpl;
     }
 
 	@GetMapping("/home")
@@ -141,6 +145,44 @@ public class AdminController {
 		MultipartFile serviceFile = serviceDto.getServiceFile();
 		servicesService.updateService(realPath, serviceFile, serviceDto, id, oldfilename);
 		return "redirect:/admin/readAllServices";
+	}
+	
+	@GetMapping("/uploadResume")
+	public String updateResumeView() {
+		return "admin/uploadResume";
+	}
+	
+	@PostMapping("/uploadResume")
+	public String updateResumeView(@RequestParam MultipartFile resume,RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) throws IllegalStateException, IOException {
+		
+		if(resume==null || resume.isEmpty()) {
+			redirectAttributes.addFlashAttribute("result","Resume must be uploaded");
+			return "redirect:/admin/uploadResume";
+		}
+		
+		long size = resume.getSize(); // come into Byte. 
+		if(size>(3*(1024*1024))) {
+			redirectAttributes.addFlashAttribute("result","Resume file must not exceed 3MB.");
+			return "redirect:/admin/uploadResume";
+		}
+		
+		String contentType = resume.getContentType();
+		if(!contentType.contains("pdf")) {
+			redirectAttributes.addFlashAttribute("result","Resume must be in PDF.");
+			return "redirect:/admin/uploadResume";
+		}
+		
+		String realPath=httpServletRequest.getServletContext().getRealPath("/resume/");
+		Path path = Paths.get(realPath, "MyResume.pdf");
+		File file = path.toFile();
+		
+		if(file.exists()) {
+			file.delete();
+		}
+		
+		resume.transferTo(file);
+		redirectAttributes.addFlashAttribute("uploaded","Resume uploaded successfully.");
+		return "redirect:/admin/uploadResume";
 	}
 
 }
