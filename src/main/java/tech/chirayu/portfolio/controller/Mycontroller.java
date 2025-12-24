@@ -1,7 +1,14 @@
 package tech.chirayu.portfolio.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +77,20 @@ public class Mycontroller {
 		contactService.saveContact(contactDto);
 		redirectAttributes.addFlashAttribute("result", "Contact save Successfully");
 		return "redirect:/client/contact";
+	}
+	
+	@GetMapping("/downloadResume")
+	public void downloadResume(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws IOException {
+		String realPath=httpServletRequest.getServletContext().getRealPath("/resume/");
+		Path path = Paths.get(realPath, "MyResume.pdf");
+		
+		httpServletResponse.setContentType("application/pdf");
+		httpServletResponse.setHeader("Content-Disposition", "attachment; filename=ChirayuResume.pdf" );
+		
+	ServletOutputStream outputStream = httpServletResponse.getOutputStream();
+	Files.copy(path, outputStream);
+	outputStream.flush();
+		
 	}
 
 }
